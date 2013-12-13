@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">RecordPlay</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Presione grabar </string>
+    <string name="btn_txt_record">Grabar</string>
+    <string name="btn_txt_play">Reproducir</string>
+    <string name="btn_txt_stop">Detener</string>
+    <string name="effects">Efectos</string>
+    <string name="effectEco">Eco</string>
+    <string name="effectPitch">Ardilla</string>
+    <string name="noEffect">Ninguno</string>
+
+</resources>

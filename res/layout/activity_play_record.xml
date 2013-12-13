@@ -1,0 +1,68 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="30dp" >
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/hello_world" />
+
+    <Button
+        android:id="@+id/btn_record"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="@string/btn_txt_record" />
+
+    <TextView
+        android:id="@+id/TextView01"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/effects"
+        android:paddingTop="23dp"
+        android:paddingBottom="10dp" />
+
+    <RadioGroup
+        android:id="@+id/optGroupEffects"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >  
+   
+     	<RadioButton
+            android:id="@+id/optNone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="@string/noEffect" />    
+        <RadioButton
+            android:id="@+id/optEcho"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/effectEco" />
+        <RadioButton
+            android:id="@+id/optArd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/effectPitch" />
+    </RadioGroup>
+
+    <ProgressBar
+        android:id="@+id/progressPlay"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="23dp" />
+
+    <Button
+        android:id="@+id/btn_play"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="22dp"
+        android:enabled="false"
+        android:text="@string/btn_txt_play" />
+    
+</LinearLayout>
