@@ -220,6 +220,8 @@ public class PlayRecord extends Activity {
 	    	      
 	            	while(in.read(data) != -1){
 	                     audioTrack.write(data,0,bufferSize);
+	                     Log.d(LOG_TAG,"Applying effects");
+	                     applyEffect(data);
 	                     curretBufferPlaying++;
 	                     progress = ((double) curretBufferPlaying/recordedBufferSize)*100.0;
 	                     progressPlay.setProgress((int) progress);
@@ -258,26 +260,36 @@ public class PlayRecord extends Activity {
     }
 	
 	private void applyEffect(byte[] data){
+		float[] newdatafl=floatMe(shortMe(data));
+		double[] newdatadbl2,newdatadbl=doubleMe(shortMe(data));
 		switch(currentEffect){
 		case EFFECT_NONE:
+			Log.d(LOG_TAG,"No effect");
 			break;
 		case EFFECT_ECHO:
+			Log.d(LOG_TAG,"Efecto eco1");
 			EchoEffect echo=new EchoEffect();
-			data=byteMe(echo.EchoEfecto(doubleMe(shortMe(data)),bufferSize,RECORDER_SAMPLERATE));
+			Log.d(LOG_TAG,"Efecto eco2");
+			newdatadbl2=echo.EchoEfecto(newdatadbl,bufferSize,RECORDER_SAMPLERATE);
+			Log.d(LOG_TAG,"Efecto eco3");
+			data=byteMe(newdatadbl2);
 			break;
 		case EFFECT_ARD:
+			Log.d(LOG_TAG,"Efecto ardilla");
 			PitchShifter ardilla=new PitchShifter();
-			ardilla.PitchShift(0.5f, data.length,RECORDER_SAMPLERATE, floatMe(shortMe(data))); 
+			ardilla.PitchShift(0.5f, bufferSize,RECORDER_SAMPLERATE, newdatafl); 
+			data=byteMe(newdatafl);
 			break;
 		case EFFECT_ZEUS:
+			Log.d(LOG_TAG,"Efecto zeus");
 			PitchShifter zeus=new PitchShifter();
-			float[] newdata=floatMe(shortMe(data));
-			zeus.PitchShift(2.0f, data.length,RECORDER_SAMPLERATE, newdata);
-			data=byteMe(newdata);
+			zeus.PitchShift(2.0f, bufferSize,RECORDER_SAMPLERATE, newdatafl);
+			data=byteMe(newdatafl);
 			break;
 		case EFFECT_REVERB:
+			Log.d(LOG_TAG,"Efecto reverb");
 			ReverbEffect reverb=new ReverbEffect();
-			data=byteMe(reverb.ReverbEfecto(doubleMe(shortMe(data)),bufferSize,RECORDER_SAMPLERATE));
+			data=byteMe(reverb.ReverbEfecto(newdatadbl,bufferSize,RECORDER_SAMPLERATE));
 			break;
 		}
 		
@@ -517,8 +529,11 @@ public class PlayRecord extends Activity {
 	public static byte[] byteMe(double[] array){
 		ByteBuffer byteBuf = ByteBuffer.allocate(4 * array.length);
 		DoubleBuffer doubleBuf = byteBuf.asDoubleBuffer();
-		doubleBuf.put(array);
+		Log.d(LOG_TAG,"over here");
+		//doubleBuf.put(array);
+		Log.d(LOG_TAG,"Im hungry");
 		byte [] byte_array = byteBuf.array();
+		Log.d(LOG_TAG,"Or at the end?");
 		return byte_array;
 	}
 	

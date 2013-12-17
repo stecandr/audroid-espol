@@ -1,8 +1,12 @@
 package com.gonzalo.recordplay;
 
+import android.util.Log;
+
+
 public class EchoEffect {
 	private static int tiempo=1;
 	private static float decay=0.3f;
+	static final String LOG_TAG2 = EchoEffect.class.getSimpleName();
 	
 	protected EchoEffect(){}
 	
@@ -12,10 +16,10 @@ public class EchoEffect {
 		double[] out = new double[audioSize];
 		double[] kernel= new double[M];
 		for(int i=0; i<M; i++){
-			kernel[i]=0f;
+			kernel[i]=0;
 		}
 		kernel[0]=1-decay;
-		kernel[M]=decay;
+		kernel[M-1]=decay;
 		out=conv.convolute(audio, kernel);
 		return out;
 	}
