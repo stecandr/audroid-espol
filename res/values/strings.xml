@@ -12,5 +12,6 @@
     <string name="effectPitch">Ardilla</string>
     <string name="noEffect">Ninguno</string>
     <string name="effectPitch2">Zeus</string>
+    <string name="effectReverb">Reverberación</string>
 
 </resources>

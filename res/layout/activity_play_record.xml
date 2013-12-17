@@ -44,6 +44,11 @@
             android:layout_height="wrap_content"
             android:text="@string/effectEco" />
         <RadioButton
+            android:id="@+id/optReverb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/effectReverb" />
+        <RadioButton
             android:id="@+id/optArd"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -61,13 +66,13 @@
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="23dp" />
+        android:paddingTop="15dp" />
 
     <Button
         android:id="@+id/btn_play"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="22dp"
+        android:layout_marginTop="15dp"
         android:enabled="false"
         android:text="@string/btn_txt_play" />
     

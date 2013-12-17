@@ -62,6 +62,7 @@ public class PlayRecord extends Activity {
     static final String LOG_TAG = PlayRecord.class.getSimpleName();
     static final short EFFECT_NONE = 0;
     static final short EFFECT_ECHO = 1;
+    static final short EFFECT_REVERB = 4;
     static final short EFFECT_ARD = 2;
     static final short EFFECT_ZEUS = 3;
     
@@ -122,6 +123,9 @@ public class PlayRecord extends Activity {
     		    }	
     		    else if(radioBtn.getId()==R.id.optEcho){
     		    	currentEffect=EFFECT_ECHO;
+    		    }
+    		    else if(radioBtn.getId()==R.id.optReverb){
+    		    	currentEffect=EFFECT_REVERB;
     		    }
     		    else if(radioBtn.getId()==R.id.optArd){
     		    	currentEffect=EFFECT_ARD;
@@ -267,7 +271,13 @@ public class PlayRecord extends Activity {
 			break;
 		case EFFECT_ZEUS:
 			PitchShifter zeus=new PitchShifter();
-			zeus.PitchShift(2.0f, data.length,RECORDER_SAMPLERATE, floatMe(shortMe(data))); 
+			float[] newdata=floatMe(shortMe(data));
+			zeus.PitchShift(2.0f, data.length,RECORDER_SAMPLERATE, newdata);
+			data=byteMe(newdata);
+			break;
+		case EFFECT_REVERB:
+			ReverbEffect reverb=new ReverbEffect();
+			data=byteMe(reverb.ReverbEfecto(doubleMe(shortMe(data)),bufferSize,RECORDER_SAMPLERATE));
 			break;
 		}
 		
@@ -508,6 +518,14 @@ public class PlayRecord extends Activity {
 		ByteBuffer byteBuf = ByteBuffer.allocate(4 * array.length);
 		DoubleBuffer doubleBuf = byteBuf.asDoubleBuffer();
 		doubleBuf.put(array);
+		byte [] byte_array = byteBuf.array();
+		return byte_array;
+	}
+	
+	public static byte[] byteMe(float[] array){
+		ByteBuffer byteBuf = ByteBuffer.allocate(4 * array.length);
+		FloatBuffer floatBuf = byteBuf.asFloatBuffer();
+		floatBuf.put(array);
 		byte [] byte_array = byteBuf.array();
 		return byte_array;
 	}
