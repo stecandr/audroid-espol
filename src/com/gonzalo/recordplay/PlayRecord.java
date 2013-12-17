@@ -277,7 +277,9 @@ public class PlayRecord extends Activity {
 		case EFFECT_ARD:
 			Log.d(LOG_TAG,"Efecto ardilla");
 			PitchShifter ardilla=new PitchShifter();
-			ardilla.PitchShift(0.5f, bufferSize,RECORDER_SAMPLERATE, newdatafl); 
+			Log.d(LOG_TAG,"Efecto ardilla2");
+			ardilla.PitchShift(0.5f, bufferSize,RECORDER_SAMPLERATE, newdatafl);
+			Log.d(LOG_TAG,"Efecto ardilla3");
 			data=byteMe(newdatafl);
 			break;
 		case EFFECT_ZEUS:
@@ -531,16 +533,14 @@ public class PlayRecord extends Activity {
 		DoubleBuffer doubleBuf = byteBuf.asDoubleBuffer();
 		Log.d(LOG_TAG,"over here");
 		//doubleBuf.put(array);
-		Log.d(LOG_TAG,"Im hungry");
 		byte [] byte_array = byteBuf.array();
-		Log.d(LOG_TAG,"Or at the end?");
 		return byte_array;
 	}
 	
 	public static byte[] byteMe(float[] array){
 		ByteBuffer byteBuf = ByteBuffer.allocate(4 * array.length);
 		FloatBuffer floatBuf = byteBuf.asFloatBuffer();
-		floatBuf.put(array);
+		//floatBuf.put(array);
 		byte [] byte_array = byteBuf.array();
 		return byte_array;
 	}

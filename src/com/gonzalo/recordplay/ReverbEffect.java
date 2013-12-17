@@ -1,8 +1,11 @@
 package com.gonzalo.recordplay;
 
+import android.util.Log;
+
 public class ReverbEffect {
 	private static int tiempo=1;
 	//private static float decay=0.3f;
+	static final String LOG_TAG3 = ReverbEffect.class.getSimpleName();
 	
 	protected ReverbEffect(){}
 	
@@ -10,15 +13,15 @@ public class ReverbEffect {
 		int M = fs*tiempo;
 		int d, e, k=1;
 		Convolution conv = new Convolution();
-		double [] midaudio= new double[M+audioSize];
+		double [] midaudio= new double[M+audioSize+1];
 		double[] out = new double[audioSize];
 		double[] kernel= new double[M];
 		double [] ceros= new double[M];
 		for(int i=0; i<M; i++){
-			ceros[i]=0f;
+			ceros[i]=0;
 		}
-		for(int i=0; i<M; i++){
-			kernel[i]=0f;
+		for(int j=0; j<M; j++){
+			kernel[j]=0;
 		}
 		d=(int)fs/10;
 		e=(int)M/d;
@@ -27,11 +30,11 @@ public class ReverbEffect {
 			kernel[i]=k;
 			k=k-(1/e);
 		}
-		
-		System.arraycopy(ceros, 0, midaudio, 0, M);
-		System.arraycopy(audio, 0, midaudio, M, audioSize);
-		
-		out=conv.convolute(midaudio, kernel);
+		/*System.arraycopy(ceros, 0, midaudio, 0, M);
+		Log.d(LOG_TAG3,"aqui!");
+		System.arraycopy(audio, 0, midaudio, M, audioSize);*/
+		Log.d(LOG_TAG3,"you win");
+		out=conv.convolute(audio, kernel);
 		return out;
 	}
 }
