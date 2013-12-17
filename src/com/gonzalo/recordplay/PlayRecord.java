@@ -63,6 +63,7 @@ public class PlayRecord extends Activity {
     static final short EFFECT_NONE = 0;
     static final short EFFECT_ECHO = 1;
     static final short EFFECT_ARD = 2;
+    static final short EFFECT_ZEUS = 3;
     
     
     @Override
@@ -122,8 +123,11 @@ public class PlayRecord extends Activity {
     		    else if(radioBtn.getId()==R.id.optEcho){
     		    	currentEffect=EFFECT_ECHO;
     		    }
-    		    else{
+    		    else if(radioBtn.getId()==R.id.optArd){
     		    	currentEffect=EFFECT_ARD;
+    		    }
+    		    else{
+    		    	currentEffect=EFFECT_ZEUS;
     		    }
     		    Log.d(LOG_TAG,"Current Effect: " + currentEffect);
     		}
@@ -255,9 +259,15 @@ public class PlayRecord extends Activity {
 			break;
 		case EFFECT_ECHO:
 			EchoEffect echo=new EchoEffect();
-			data=byteMe(echo.EchoEffect(doubleMe(shortMe(data)),bufferSize,RECORDER_SAMPLERATE));
+			data=byteMe(echo.EchoEfecto(doubleMe(shortMe(data)),bufferSize,RECORDER_SAMPLERATE));
 			break;
 		case EFFECT_ARD:
+			PitchShifter ardilla=new PitchShifter();
+			ardilla.PitchShift(0.5f, data.length,RECORDER_SAMPLERATE, floatMe(shortMe(data))); 
+			break;
+		case EFFECT_ZEUS:
+			PitchShifter zeus=new PitchShifter();
+			zeus.PitchShift(2.0f, data.length,RECORDER_SAMPLERATE, floatMe(shortMe(data))); 
 			break;
 		}
 		
@@ -471,6 +481,14 @@ public class PlayRecord extends Activity {
 	
 	public static double[] doubleMe(short[] pcms) {
 	    double[] floaters = new double[pcms.length];
+	    for (int i = 0; i < pcms.length; i++) {
+	        floaters[i] = pcms[i];
+	    }
+	    return floaters;
+	}
+	
+	public static float[] floatMe(short[] pcms) {
+	    float[] floaters = new float[pcms.length];
 	    for (int i = 0; i < pcms.length; i++) {
 	        floaters[i] = pcms[i];
 	    }

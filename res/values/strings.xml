@@ -11,5 +11,6 @@
     <string name="effectEco">Eco</string>
     <string name="effectPitch">Ardilla</string>
     <string name="noEffect">Ninguno</string>
+    <string name="effectPitch2">Zeus</string>
 
 </resources>

@@ -4,8 +4,9 @@ public class EchoEffect {
 	private static int tiempo=1;
 	private static float decay=0.3f;
 	
+	protected EchoEffect(){}
 	
-	public static double[] EchoEffect(double[] audio, int audioSize, int fs){
+	public double[] EchoEfecto(double[] audio, int audioSize, int fs){
 		int M = fs*tiempo;
 		Convolution conv = new Convolution();
 		double[] out = new double[audioSize];

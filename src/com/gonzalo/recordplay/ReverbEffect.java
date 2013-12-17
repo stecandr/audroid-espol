@@ -4,11 +4,14 @@ public class ReverbEffect {
 	private static int tiempo=1;
 	//private static float decay=0.3f;
 	
-	public static void ReverbEffect(double[] audio, int audioSize, int fs,double[] out){
+	protected ReverbEffect(){}
+	
+	public double[] ReverbEfecto(double[] audio, int audioSize, int fs){
 		int M = fs*tiempo;
 		int d, e, k=1;
 		Convolution conv = new Convolution();
 		double [] midaudio= new double[M+audioSize];
+		double[] out = new double[audioSize];
 		double[] kernel= new double[M];
 		double [] ceros= new double[M];
 		for(int i=0; i<M; i++){
@@ -29,5 +32,6 @@ public class ReverbEffect {
 		System.arraycopy(audio, 0, midaudio, M, audioSize);
 		
 		out=conv.convolute(midaudio, kernel);
+		return out;
 	}
 }
