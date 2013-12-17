@@ -19,6 +19,7 @@ import android.media.MediaRecorder;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
+import android.renderscript.Sampler;
 import android.app.Activity;
 import android.util.Log;
 import android.view.Menu;
@@ -29,6 +30,7 @@ import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
+import java.nio.*;
 
 public class PlayRecord extends Activity {
 
@@ -200,7 +202,8 @@ public class PlayRecord extends Activity {
 	            							RECORDER_PLAY_CHANNELS,
 	            							RECORDER_AUDIO_ENCODING, 
 	            							bufferPlaySize,
-	            							AudioTrack.MODE_STREAM);		
+	            							AudioTrack.MODE_STREAM);	
+	            	//apply effects around here
 	            	audioTrack.play();
 	            	byte[] data = new byte[bufferSize];
 	            	isPlaying=true;
@@ -246,7 +249,17 @@ public class PlayRecord extends Activity {
         
     }
 	
-	private void applyEffect(){
+	private void applyEffect(byte[] data){
+		switch(currentEffect){
+		case EFFECT_NONE:
+			break;
+		case EFFECT_ECHO:
+			EchoEffect echo=new EchoEffect();
+			data=byteMe(echo.EchoEffect(doubleMe(shortMe(data)),bufferSize,RECORDER_SAMPLERATE));
+			break;
+		case EFFECT_ARD:
+			break;
+		}
 		
 	}
     
@@ -454,6 +467,32 @@ public class PlayRecord extends Activity {
           }
           t = null;
      }
+    
+	
+	public static double[] doubleMe(short[] pcms) {
+	    double[] floaters = new double[pcms.length];
+	    for (int i = 0; i < pcms.length; i++) {
+	        floaters[i] = pcms[i];
+	    }
+	    return floaters;
+	}
+	
+	public static short[] shortMe(byte[] bytes) {
+	    short[] out = new short[bytes.length / 2]; // will drop last byte if odd number
+	    ByteBuffer bb = ByteBuffer.wrap(bytes);
+	    for (int i = 0; i < out.length; i++) {
+	        out[i] = bb.getShort();
+	    }
+	    return out;
+	}
+	
+	public static byte[] byteMe(double[] array){
+		ByteBuffer byteBuf = ByteBuffer.allocate(4 * array.length);
+		DoubleBuffer doubleBuf = byteBuf.asDoubleBuffer();
+		doubleBuf.put(array);
+		byte [] byte_array = byteBuf.array();
+		return byte_array;
+	}
     
     
     private class PlayTask extends AsyncTask<Void, Void, Void> {
