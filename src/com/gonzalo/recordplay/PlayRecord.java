@@ -262,6 +262,7 @@ public class PlayRecord extends Activity {
 	private void applyEffect(byte[] data){
 		float[] newdatafl=floatMe(shortMe(data));
 		double[] newdatadbl2,newdatadbl=doubleMe(shortMe(data));
+		ByteBuffer newdatabb=toByteBuffer(data);
 		switch(currentEffect){
 		case EFFECT_NONE:
 			Log.d(LOG_TAG,"No effect");
@@ -274,18 +275,20 @@ public class PlayRecord extends Activity {
 			Log.d(LOG_TAG,"Efecto eco3");
 			data=byteMe(newdatadbl2);
 			break;
-		case EFFECT_ARD:
-			Log.d(LOG_TAG,"Efecto ardilla");
-			PitchShifter ardilla=new PitchShifter();
-			Log.d(LOG_TAG,"Efecto ardilla2");
-			ardilla.PitchShift(0.5f, bufferSize,RECORDER_SAMPLERATE, newdatafl);
-			Log.d(LOG_TAG,"Efecto ardilla3");
-			data=byteMe(newdatafl);
+		case EFFECT_ARD: //por el momento wahwah
+			Log.d(LOG_TAG,"Efecto wah");
+			//PitchShifter ardilla=new PitchShifter();
+			WahWahEffect wah = new WahWahEffect();
+			Log.d(LOG_TAG,"Efecto wah2");
+			//newdatafl=ardilla.PitchShift(0.5f, bufferSize,RECORDER_SAMPLERATE, newdatafl);
+			newdatabb=wah.createWahData(newdatabb, RECORDER_SAMPLERATE);
+			Log.d(LOG_TAG,"Efecto wah3");
+			data=newdatabb.array();
 			break;
 		case EFFECT_ZEUS:
 			Log.d(LOG_TAG,"Efecto zeus");
 			PitchShifter zeus=new PitchShifter();
-			zeus.PitchShift(2.0f, bufferSize,RECORDER_SAMPLERATE, newdatafl);
+			newdatafl=zeus.PitchShift(2.0f, bufferSize,RECORDER_SAMPLERATE, newdatafl);
 			data=byteMe(newdatafl);
 			break;
 		case EFFECT_REVERB:
@@ -543,6 +546,30 @@ public class PlayRecord extends Activity {
 		//floatBuf.put(array);
 		byte [] byte_array = byteBuf.array();
 		return byte_array;
+	}
+	
+	public static ByteBuffer toByteBuffer(byte[] array){
+		
+		// Wrap a byte array into a buffer
+		ByteBuffer buf = ByteBuffer.wrap(array);		 
+		
+		// Retrieve bytes between the position and limit
+		// (see Putting Bytes into a ByteBuffer)
+		array= new byte[buf.remaining()];
+		
+		// transfer bytes from this buffer into the given destination array
+		buf.get(array, 0, array.length);
+		
+		// Retrieve all bytes in the buffer
+		buf.clear();
+		array = new byte[buf.capacity()];
+		
+		// transfer bytes from this buffer into the given destination array
+		buf.get(array, 0, array.length);
+		
+		return buf;
+
+		
 	}
     
     
