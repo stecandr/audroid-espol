@@ -53,12 +53,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/effectPitch" />
-        
-        <RadioButton
-            android:id="@+id/optZeus"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/effectPitch2" />
     </RadioGroup>
 
     <Button

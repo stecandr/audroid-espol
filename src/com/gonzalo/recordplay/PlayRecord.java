@@ -59,6 +59,7 @@ public class PlayRecord extends Activity {
     private int curretBufferPlaying=0;
     private short currentEffect;
     
+    
     static final String LOG_TAG = PlayRecord.class.getSimpleName();
     static final short EFFECT_NONE = 0;
     static final short EFFECT_ECHO = 1;
@@ -127,12 +128,10 @@ public class PlayRecord extends Activity {
     		    else if(radioBtn.getId()==R.id.optReverb){
     		    	currentEffect=EFFECT_REVERB;
     		    }
-    		    else if(radioBtn.getId()==R.id.optArd){
+    		    else{
     		    	currentEffect=EFFECT_ARD;
     		    }
-    		    else{
-    		    	currentEffect=EFFECT_ZEUS;
-    		    }
+    		    
     		    Log.d(LOG_TAG,"Current Effect: " + currentEffect);
     		}
      
@@ -221,7 +220,7 @@ public class PlayRecord extends Activity {
 	            	while(in.read(data) != -1){
 	                     audioTrack.write(data,0,bufferSize);
 	                     Log.d(LOG_TAG,"Applying effects");
-	                     applyEffect(data);
+	                     new EffectTask().execute(data);//applyEffect(data);
 	                     curretBufferPlaying++;
 	                     progress = ((double) curretBufferPlaying/recordedBufferSize)*100.0;
 	                     progressPlay.setProgress((int) progress);
@@ -268,21 +267,17 @@ public class PlayRecord extends Activity {
 			Log.d(LOG_TAG,"No effect");
 			break;
 		case EFFECT_ECHO:
-			Log.d(LOG_TAG,"Efecto eco1");
+			Log.d(LOG_TAG,"Efecto eco");
 			EchoEffect echo=new EchoEffect();
-			Log.d(LOG_TAG,"Efecto eco2");
 			newdatadbl2=echo.EchoEfecto(newdatadbl,bufferSize,RECORDER_SAMPLERATE);
-			Log.d(LOG_TAG,"Efecto eco3");
 			data=byteMe(newdatadbl2);
 			break;
-		case EFFECT_ARD: //por el momento wahwah
+		case EFFECT_ARD: //por el momento wahwah1
 			Log.d(LOG_TAG,"Efecto wah");
 			//PitchShifter ardilla=new PitchShifter();
 			WahWahEffect wah = new WahWahEffect();
-			Log.d(LOG_TAG,"Efecto wah2");
 			//newdatafl=ardilla.PitchShift(0.5f, bufferSize,RECORDER_SAMPLERATE, newdatafl);
 			newdatabb=wah.createWahData(newdatabb, RECORDER_SAMPLERATE);
-			Log.d(LOG_TAG,"Efecto wah3");
 			data=newdatabb.array();
 			break;
 		case EFFECT_ZEUS:
@@ -585,6 +580,20 @@ public class PlayRecord extends Activity {
 		protected void onPostExecute(Void result){
 			btnPlay.setEnabled(true);
 			btnRecordStop.setEnabled(true);
+		}
+    }
+    
+    private class EffectTask extends AsyncTask<byte[], Void, Void> {
+	
+		protected void onPostExecute(Void result){
+			btnPlay.setEnabled(true);
+			btnRecordStop.setEnabled(true);
+		}
+
+		@Override
+		protected Void doInBackground(byte[]... arg0) {
+			applyEffect(arg0[0]);
+			return null;
 		}
     }
 }
